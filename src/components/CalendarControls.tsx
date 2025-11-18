@@ -74,6 +74,8 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
     const [exportWidth, setExportWidth] = useState('1920');
     const [exportHeight, setExportHeight] = useState('');
     const [isExporting, setIsExporting] = useState(false);
+    const [showExportSettings, setShowExportSettings] = useState(false);
+    const [exportSettingsJson, setExportSettingsJson] = useState('');
 
     // Popular Google Fonts (matching those loaded in index.html)
     const googleFonts = [
@@ -100,7 +102,7 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
         }
     }, [width, height]); // Re-calculate when calendar dimensions change
 
-    const handleExportSettings = async () => {
+    const handleExportSettings = () => {
         const settings: CalendarSettings = {
             colors,
             fontFamily,
@@ -114,14 +116,11 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
             borderRadius
         };
 
-        try {
-            await navigator.clipboard.writeText(JSON.stringify(settings, null, 2));
-            setExportMessage('Settings copied to clipboard!');
-            setTimeout(() => setExportMessage(''), 3000);
-        } catch (error) {
-            setExportMessage('Failed to copy to clipboard');
-            setTimeout(() => setExportMessage(''), 3000);
-        }
+        const settingsJson = JSON.stringify(settings, null, 2);
+        setExportSettingsJson(settingsJson);
+        setShowExportSettings(true);
+        setExportMessage(t.messages.settingsCopied);
+        setTimeout(() => setExportMessage(''), 3000);
     };
 
     const handleImportSettings = () => {
@@ -1224,6 +1223,59 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
                                 textAlign: 'center'
                             }}>
                                 {exportMessage}
+                            </div>
+                        )}
+
+                        {showExportSettings && (
+                            <div style={{ marginTop: '12px' }}>
+                                <label style={{
+                                    display: 'block',
+                                    marginBottom: '8px',
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    color: '#374151'
+                                }}>
+                                    Settings JSON (copy manually):
+                                </label>
+                                <textarea
+                                    value={exportSettingsJson}
+                                    readOnly
+                                    rows={8}
+                                    style={{
+                                        width: '100%',
+                                        padding: '10px',
+                                        borderRadius: '6px',
+                                        border: '2px solid #d1d5db',
+                                        fontSize: '12px',
+                                        fontFamily: 'monospace',
+                                        backgroundColor: '#f9fafb',
+                                        color: '#374151',
+                                        outline: 'none',
+                                        resize: 'vertical'
+                                    }}
+                                    onFocus={(e) => {
+                                        e.target.style.borderColor = '#3b82f6';
+                                        e.target.select();
+                                    }}
+                                    onBlur={(e) => {
+                                        e.target.style.borderColor = '#d1d5db';
+                                    }}
+                                />
+                                <button
+                                    onClick={() => setShowExportSettings(false)}
+                                    style={{
+                                        marginTop: '8px',
+                                        padding: '6px 12px',
+                                        backgroundColor: '#6b7280',
+                                        color: '#ffffff',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        fontSize: '12px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Close
+                                </button>
                             </div>
                         )}
                     </div>

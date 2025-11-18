@@ -57,6 +57,7 @@ export interface Translation {
     // Messages
     messages: {
         settingsCopied: string;
+        settingsDownloaded: string;
         settingsImported: string;
         invalidSettings: string;
         generatingImages: string;
@@ -64,9 +65,7 @@ export interface Translation {
         validDimensions: string;
         generating: string;
         of: string;
-    };
-
-    // Month names
+    };    // Month names
     months: {
         january: string;
         february: string;
