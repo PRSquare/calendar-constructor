@@ -148,6 +148,7 @@ export const translations: Record<string, Translation> = {
 
         messages: {
             settingsCopied: 'Settings copied to clipboard!',
+            settingsDownloaded: 'Settings downloaded as JSON file!',
             settingsImported: 'Settings imported successfully!',
             invalidSettings: 'Invalid settings format. Please check your JSON.',
             generatingImages: 'Generating calendar images...',
@@ -237,6 +238,7 @@ export const translations: Record<string, Translation> = {
 
         messages: {
             settingsCopied: 'Настройки скопированы в буфер обмена!',
+            settingsDownloaded: 'Настройки загружены как JSON файл!',
             settingsImported: 'Настройки успешно импортированы!',
             invalidSettings: 'Неверный формат настроек. Проверьте ваш JSON.',
             generatingImages: 'Генерация изображений календаря...',
