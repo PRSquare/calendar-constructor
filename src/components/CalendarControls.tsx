@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { CalendarColors, TitlePosition, NumberPosition } from './CalendarCanvas';
 import { useLanguage } from '../i18n/LanguageContext';
 import { getMonthNames, getDayNames } from '../i18n/helpers';
+import FontSelector from './FontSelector';
 
 export interface CalendarSettings {
     colors: CalendarColors;
@@ -76,24 +77,6 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
     const [isExporting, setIsExporting] = useState(false);
     const [showExportSettings, setShowExportSettings] = useState(false);
     const [exportSettingsJson, setExportSettingsJson] = useState('');
-
-    // Popular Google Fonts (matching those loaded in index.html)
-    const googleFonts = [
-        'Arial',
-        'Roboto',
-        'Open Sans',
-        'Lato',
-        'Montserrat',
-        'Oswald',
-        'Source Sans 3',  // Fixed: was "Source Sans Pro"
-        'Raleway',
-        'PT Sans',
-        'Merriweather',
-        'Playfair Display',
-        'Ubuntu',
-        'Nunito',
-        'Poppins'
-    ];
 
     // Initialize export height based on current calendar dimensions
     useEffect(() => {
@@ -644,36 +627,11 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
                         borderBottom: '2px solid #e5e7eb',
                         paddingBottom: '8px'
                     }}>🔤 Font</h3>
-                    <select
+                    <FontSelector
                         value={fontFamily}
-                        onChange={(e) => onFontFamilyChange(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '12px 16px',
-                            borderRadius: '8px',
-                            border: '2px solid #d1d5db',
-                            fontSize: '15px',
-                            fontWeight: '500',
-                            color: '#374151',
-                            backgroundColor: '#ffffff',
-                            cursor: 'pointer',
-                            transition: 'border-color 0.2s ease',
-                            outline: 'none',
-                            marginBottom: '16px'
-                        }}
-                        onFocus={(e) => {
-                            e.target.style.borderColor = '#3b82f6';
-                            e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
-                        }}
-                        onBlur={(e) => {
-                            e.target.style.borderColor = '#d1d5db';
-                            e.target.style.boxShadow = 'none';
-                        }}
-                    >
-                        {googleFonts.map(font => (
-                            <option key={font} value={font}>{font}</option>
-                        ))}
-                    </select>
+                        onChange={onFontFamilyChange}
+                        style={{ marginBottom: '16px' }}
+                    />
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <div>

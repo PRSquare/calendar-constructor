@@ -1,0 +1,32 @@
+{
+  "customFonts": [
+    {
+      "name": "Example Multi-Weight Font",
+      "family": "ExampleFont",
+      "weights": [300, 400, 700],
+      "styles": ["normal", "italic"],
+      "files": [
+        {
+          "weight": 300,
+          "style": "normal",
+          "url": "/fonts/ExampleFont-Light.ttf"
+        },
+        {
+          "weight": 400,
+          "style": "normal",
+          "url": "/fonts/ExampleFont-Regular.ttf"
+        },
+        {
+          "weight": 400,
+          "style": "italic",
+          "url": "/fonts/ExampleFont-Italic.ttf"
+        },
+        {
+          "weight": 700,
+          "style": "normal",
+          "url": "/fonts/ExampleFont-Bold.ttf"
+        }
+      ]
+    }
+  ]
+}

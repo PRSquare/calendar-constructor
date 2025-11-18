@@ -25,3 +25,16 @@ dist-ssr
 
 # Environment files
 .env
+
+# Custom font files (remove these lines if you want to commit font files to the repo)
+# Note: Be careful about font licensing when committing font files
+public/fonts/*.ttf
+public/fonts/*.otf
+public/fonts/*.woff
+public/fonts/*.woff2
+
+# Custom font configuration (users should create their own fonts.json)
+public/fonts/fonts.json
+
+# Allow specific fonts if needed (uncomment and modify as needed)
+# !public/fonts/MyAllowedFont-*.ttf
