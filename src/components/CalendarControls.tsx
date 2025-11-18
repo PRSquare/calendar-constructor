@@ -212,7 +212,7 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
 
             // Get translated month and day names
             const monthNames = getMonthNames(t);
-            const dayNames = getDayNames(t);
+            const dayNames = getDayNames(t, useLongDayNames);
 
             // Layout calculations (scaled for export)
             const scaleFactor = targetWidth / width;
