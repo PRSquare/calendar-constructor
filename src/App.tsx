@@ -27,6 +27,7 @@ function AppContent() {
   const [canvasWidth, setCanvasWidth] = useState(600);
   const [canvasHeight, setCanvasHeight] = useState(400);
   const [borderRadius, setBorderRadius] = useState(15);
+  const [useLongDayNames, setUseLongDayNames] = useState(false);
 
   const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let inputValue = event.target.value;
@@ -83,6 +84,7 @@ function AppContent() {
     setCanvasWidth(settings.width);
     setCanvasHeight(settings.height);
     setBorderRadius(settings.borderRadius);
+    setUseLongDayNames(settings.useLongDayNames);
   };
 
   return (
@@ -174,6 +176,7 @@ function AppContent() {
               width={canvasWidth}
               height={canvasHeight}
               borderRadius={borderRadius}
+              useLongDayNames={useLongDayNames}
               selectedDate={selectedDate}
               onColorsChange={setColors}
               onFontFamilyChange={setFontFamily}
@@ -185,6 +188,7 @@ function AppContent() {
               onWidthChange={setCanvasWidth}
               onHeightChange={setCanvasHeight}
               onBorderRadiusChange={setBorderRadius}
+              onUseLongDayNamesChange={setUseLongDayNames}
               onSettingsImport={handleSettingsImport}
             />
 
@@ -213,6 +217,7 @@ function AppContent() {
               numberPosition={numberPosition}
               borderRadius={borderRadius}
               translation={t}
+              useLongDayNames={useLongDayNames}
             />
           </div>
         </div>
@@ -296,6 +301,7 @@ function AppContent() {
                       numberPosition={numberPosition}
                       borderRadius={Math.round(borderRadius * scaleFactor)} // Exact proportional scaling
                       translation={t}
+                      useLongDayNames={useLongDayNames}
                     />
                   </div>
                 );

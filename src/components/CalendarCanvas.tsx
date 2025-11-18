@@ -24,6 +24,7 @@ interface CalendarCanvasProps {
     titlePosition?: TitlePosition;
     numberPosition?: NumberPosition;
     borderRadius?: number;  // Border radius for the background
+    useLongDayNames?: boolean;  // Use full day names instead of abbreviated
     translation: Translation;  // Translation object
 }
 
@@ -44,13 +45,14 @@ const CalendarCanvas: React.FC<CalendarCanvasProps> = ({
     titlePosition = 'center',
     numberPosition = 'center',
     borderRadius = 15,
+    useLongDayNames = false,
     translation
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // Get translated month and day names
     const monthNames = getMonthNames(translation);
-    const dayNames = getDayNames(translation);
+    const dayNames = getDayNames(translation, useLongDayNames);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -260,7 +262,7 @@ const CalendarCanvas: React.FC<CalendarCanvasProps> = ({
         // Call the async rendering function
         renderCalendar();
 
-    }, [date, width, height, colors, fontFamily, titleFontSize, numberFontSize, showGrid, titlePosition, numberPosition, borderRadius, translation]);
+    }, [date, width, height, colors, fontFamily, titleFontSize, numberFontSize, showGrid, titlePosition, numberPosition, borderRadius, useLongDayNames, translation]);
 
     return (
         <canvas

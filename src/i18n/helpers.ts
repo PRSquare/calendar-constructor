@@ -17,14 +17,15 @@ export const getMonthNames = (t: Translation): string[] => {
     ];
 };
 
-export const getDayNames = (t: Translation): string[] => {
+export const getDayNames = (t: Translation, useLongNames: boolean = false): string[] => {
+    const daySource = useLongNames ? t.daysLong : t.days;
     return [
-        t.days.monday,
-        t.days.tuesday,
-        t.days.wednesday,
-        t.days.thursday,
-        t.days.friday,
-        t.days.saturday,
-        t.days.sunday
+        daySource.monday,
+        daySource.tuesday,
+        daySource.wednesday,
+        daySource.thursday,
+        daySource.friday,
+        daySource.saturday,
+        daySource.sunday
     ];
 };

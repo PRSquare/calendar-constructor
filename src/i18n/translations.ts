@@ -41,6 +41,9 @@ export interface Translation {
         exportWidth: string;
         exportHeight: string;
         language: string;
+        dayNameFormat: string;
+        shortDayNames: string;
+        longDayNames: string;
     };
 
     // Position options
@@ -91,6 +94,17 @@ export interface Translation {
         saturday: string;
         sunday: string;
     };
+
+    // Full day names
+    daysLong: {
+        monday: string;
+        tuesday: string;
+        wednesday: string;
+        thursday: string;
+        friday: string;
+        saturday: string;
+        sunday: string;
+    };
 }
 
 export const translations: Record<string, Translation> = {
@@ -133,7 +147,10 @@ export const translations: Record<string, Translation> = {
             exportImages: 'Export Calendar Images',
             exportWidth: 'Export Width (px)',
             exportHeight: 'Export Height (px)',
-            language: 'Language'
+            language: 'Language',
+            dayNameFormat: 'Day Name Format',
+            shortDayNames: 'Short (Mon, Tue, Wed)',
+            longDayNames: 'Long (Monday, Tuesday, Wednesday)'
         },
 
         positions: {
@@ -181,6 +198,16 @@ export const translations: Record<string, Translation> = {
             friday: 'Fri',
             saturday: 'Sat',
             sunday: 'Sun'
+        },
+
+        daysLong: {
+            monday: 'Monday',
+            tuesday: 'Tuesday',
+            wednesday: 'Wednesday',
+            thursday: 'Thursday',
+            friday: 'Friday',
+            saturday: 'Saturday',
+            sunday: 'Sunday'
         }
     },
 
@@ -223,7 +250,10 @@ export const translations: Record<string, Translation> = {
             exportImages: 'Экспорт изображений календаря',
             exportWidth: 'Ширина экспорта (px)',
             exportHeight: 'Высота экспорта (px)',
-            language: 'Язык'
+            language: 'Язык',
+            dayNameFormat: 'Формат дней недели',
+            shortDayNames: 'Краткий (Пн, Вт, Ср)',
+            longDayNames: 'Полный (Понедельник, Вторник, Среда)'
         },
 
         positions: {
@@ -271,6 +301,16 @@ export const translations: Record<string, Translation> = {
             friday: 'Пт',
             saturday: 'Сб',
             sunday: 'Вс'
+        },
+
+        daysLong: {
+            monday: 'Понедельник',
+            tuesday: 'Вторник',
+            wednesday: 'Среда',
+            thursday: 'Четверг',
+            friday: 'Пятница',
+            saturday: 'Суббота',
+            sunday: 'Воскресенье'
         }
     }
 };

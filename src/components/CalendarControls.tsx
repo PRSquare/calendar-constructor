@@ -15,6 +15,7 @@ export interface CalendarSettings {
     width: number;
     height: number;
     borderRadius: number;
+    useLongDayNames: boolean;
 }
 
 interface CalendarControlsProps {
@@ -28,6 +29,7 @@ interface CalendarControlsProps {
     width: number;
     height: number;
     borderRadius: number;
+    useLongDayNames: boolean;
     selectedDate: Date;
     onColorsChange: (colors: CalendarColors) => void;
     onFontFamilyChange: (font: string) => void;
@@ -39,6 +41,7 @@ interface CalendarControlsProps {
     onWidthChange: (width: number) => void;
     onHeightChange: (height: number) => void;
     onBorderRadiusChange: (radius: number) => void;
+    onUseLongDayNamesChange: (useLongDayNames: boolean) => void;
     onSettingsImport: (settings: CalendarSettings) => void;
 }
 
@@ -53,6 +56,7 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
     width,
     height,
     borderRadius,
+    useLongDayNames,
     selectedDate,
     onColorsChange,
     onFontFamilyChange,
@@ -64,6 +68,7 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
     onWidthChange,
     onHeightChange,
     onBorderRadiusChange,
+    onUseLongDayNamesChange,
     onSettingsImport,
 }) => {
     const { t } = useLanguage();
@@ -96,7 +101,8 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
             numberPosition,
             width,
             height,
-            borderRadius
+            borderRadius,
+            useLongDayNames
         };
 
         const settingsJson = JSON.stringify(settings, null, 2);
@@ -840,6 +846,92 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
                             color: '#374151'
                         }}>Show Grid Lines</span>
                     </label>
+                </div>
+
+                {/* Day Name Format Controls */}
+                <div style={{
+                    padding: '20px',
+                    backgroundColor: '#f8fafc',
+                    borderRadius: '10px',
+                    border: '1px solid #e2e8f0'
+                }}>
+                    <h3 style={{
+                        marginTop: 0,
+                        marginBottom: '18px',
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        color: '#1f2937',
+                        borderBottom: '2px solid #e5e7eb',
+                        paddingBottom: '8px'
+                    }}>📅 {t.controls.dayNameFormat}</h3>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <label style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            cursor: 'pointer',
+                            padding: '8px',
+                            borderRadius: '6px',
+                            transition: 'background-color 0.2s ease'
+                        }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#f1f5f9';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'transparent';
+                            }}>
+                            <input
+                                type="radio"
+                                name="dayNameFormat"
+                                checked={!useLongDayNames}
+                                onChange={() => onUseLongDayNamesChange(false)}
+                                style={{
+                                    transform: 'scale(1.3)',
+                                    accentColor: '#3b82f6',
+                                    cursor: 'pointer'
+                                }}
+                            />
+                            <span style={{
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                color: '#374151'
+                            }}>{t.controls.shortDayNames}</span>
+                        </label>
+
+                        <label style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            cursor: 'pointer',
+                            padding: '8px',
+                            borderRadius: '6px',
+                            transition: 'background-color 0.2s ease'
+                        }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#f1f5f9';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'transparent';
+                            }}>
+                            <input
+                                type="radio"
+                                name="dayNameFormat"
+                                checked={useLongDayNames}
+                                onChange={() => onUseLongDayNamesChange(true)}
+                                style={{
+                                    transform: 'scale(1.3)',
+                                    accentColor: '#3b82f6',
+                                    cursor: 'pointer'
+                                }}
+                            />
+                            <span style={{
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                color: '#374151'
+                            }}>{t.controls.longDayNames}</span>
+                        </label>
+                    </div>
                 </div>
 
                 {/* Position Controls */}
