@@ -111,11 +111,17 @@ start_preview() {
 start_prod() {
     print_status "Starting production environment..."
     
-    # Build first
-    print_status "Building production assets..."
-    docker-compose --profile prod run --rm calendar-generator-build
+    # Check if dist folder exists and has content
+    if [ ! -d "./dist" ] || [ -z "$(ls -A ./dist)" ]; then
+        print_warning "No production build found. Building first..."
+        build_prod
+        if [ $? -ne 0 ]; then
+            print_error "Build failed! Cannot start production."
+            return 1
+        fi
+    fi
     
-    # Then start nginx
+    # Start nginx
     docker-compose --profile prod up -d calendar-generator-prod
     print_success "Production environment started!"
     print_status "Application available at: http://${SERVER_URL:-localhost}:${PROD_PORT:-80}"
