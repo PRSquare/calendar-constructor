@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import type { Translation } from '../i18n/translations';
+import { getMonthNames, getDayNames } from '../i18n/helpers';
 
 export interface CalendarColors {
     main: string;        // Main text color (default: black)
@@ -22,6 +24,7 @@ interface CalendarCanvasProps {
     titlePosition?: TitlePosition;
     numberPosition?: NumberPosition;
     borderRadius?: number;  // Border radius for the background
+    translation: Translation;  // Translation object
 }
 
 const CalendarCanvas: React.FC<CalendarCanvasProps> = ({
@@ -40,18 +43,14 @@ const CalendarCanvas: React.FC<CalendarCanvasProps> = ({
     showGrid = true,
     titlePosition = 'center',
     numberPosition = 'center',
-    borderRadius = '15px'
+    borderRadius = 15,
+    translation
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    // Russian month names
-    const monthNames = [
-        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-    ];
-
-    // Russian day abbreviations
-    const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    // Get translated month and day names
+    const monthNames = getMonthNames(translation);
+    const dayNames = getDayNames(translation);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -261,7 +260,7 @@ const CalendarCanvas: React.FC<CalendarCanvasProps> = ({
         // Call the async rendering function
         renderCalendar();
 
-    }, [date, width, height, colors, fontFamily, titleFontSize, numberFontSize, showGrid, titlePosition, numberPosition, borderRadius]);
+    }, [date, width, height, colors, fontFamily, titleFontSize, numberFontSize, showGrid, titlePosition, numberPosition, borderRadius, translation]);
 
     return (
         <canvas

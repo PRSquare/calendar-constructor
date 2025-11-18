@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import CalendarCanvas from './components/CalendarCanvas'
 import CalendarControls, { type CalendarSettings } from './components/CalendarControls'
+import LanguageSelector from './components/LanguageSelector'
 import type { CalendarColors, TitlePosition, NumberPosition } from './components/CalendarCanvas'
+import { LanguageProvider, useLanguage } from './i18n/LanguageContext'
 import './App.css'
 
-function App() {
+function AppContent() {
+  const { t } = useLanguage();
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 8, 1)) // September 2024
   const [dateInputValue, setDateInputValue] = useState('2024-09') // Separate state for input value
 
@@ -84,12 +87,13 @@ function App() {
 
   return (
     <>
+      <LanguageSelector />
       <div style={{ margin: '0 auto' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '10px' }}>Calendar Generator</h1>
+        <h1 style={{ textAlign: 'center', marginBottom: '10px' }}>{t.title}</h1>
 
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <label htmlFor="month-picker" style={{ marginRight: '10px', fontSize: '16px' }}>
-            Select Month:
+            {t.selectMonth}
           </label>
           <input
             id="month-picker"
@@ -140,7 +144,7 @@ function App() {
             marginTop: '4px',
             fontStyle: 'italic'
           }}>
-            Enter numbers only (e.g., 202409)
+            {t.monthInputHelper}
           </div>
         </div>
 
@@ -208,6 +212,7 @@ function App() {
               titlePosition={titlePosition}
               numberPosition={numberPosition}
               borderRadius={borderRadius}
+              translation={t}
             />
           </div>
         </div>
@@ -227,13 +232,13 @@ function App() {
             fontSize: '14px',
             color: '#666'
           }}>
-            <h3 style={{ marginTop: 0, marginBottom: '12px' }}>Usage Instructions:</h3>
+            <h3 style={{ marginTop: 0, marginBottom: '12px' }}>{t.usageInstructions}</h3>
             <ul>
-              <li><strong>Colors:</strong> Click the color boxes to change main text, accent (weekends), background, and grid line colors</li>
-              <li><strong>Font:</strong> Select from popular Google Fonts for a different typography style</li>
-              <li><strong>Grid:</strong> Toggle grid lines on/off for a cleaner or more structured look</li>
-              <li><strong>Title Position:</strong> Place the month name on the left, center, or right</li>
-              <li><strong>Number Position:</strong> Position day numbers in different corners of each cell or center them</li>
+              <li><strong>{t.controls.colors}:</strong> {t.instructions.colors}</li>
+              <li><strong>{t.controls.font}:</strong> {t.instructions.font}</li>
+              <li><strong>{t.controls.grid}:</strong> {t.instructions.grid}</li>
+              <li><strong>{t.controls.titlePosition}:</strong> {t.instructions.titlePosition}</li>
+              <li><strong>{t.controls.numberPosition}:</strong> {t.instructions.numberPosition}</li>
             </ul>
           </div>
         </div>
@@ -256,7 +261,7 @@ function App() {
               fontWeight: '600',
               color: '#1f2937'
             }}>
-              {selectedDate.getFullYear()} Year Overview
+              {selectedDate.getFullYear()} {t.yearOverview}
             </h3>
             <div style={{
               display: 'grid',
@@ -290,6 +295,7 @@ function App() {
                       titlePosition={titlePosition}
                       numberPosition={numberPosition}
                       borderRadius={Math.round(borderRadius * scaleFactor)} // Exact proportional scaling
+                      translation={t}
                     />
                   </div>
                 );
@@ -300,6 +306,14 @@ function App() {
       </div>
     </>
   )
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
 }
 
 export default App

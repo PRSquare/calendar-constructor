@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { CalendarColors, TitlePosition, NumberPosition } from './CalendarCanvas';
+import { useLanguage } from '../i18n/LanguageContext';
+import { getMonthNames, getDayNames } from '../i18n/helpers';
 
 export interface CalendarSettings {
     colors: CalendarColors;
@@ -63,6 +65,8 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
     onBorderRadiusChange,
     onSettingsImport,
 }) => {
+    const { t } = useLanguage();
+
     const [showImportInput, setShowImportInput] = useState(false);
     const [importJson, setImportJson] = useState('');
     const [exportMessage, setExportMessage] = useState('');
@@ -218,12 +222,9 @@ const CalendarControls: React.FC<CalendarControlsProps> = ({
             // Clear canvas to transparent (same as CalendarCanvas)
             ctx.clearRect(0, 0, targetWidth, targetHeight);
 
-            // Russian month and day names (exact same as CalendarCanvas)
-            const monthNames = [
-                'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-                'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-            ];
-            const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            // Get translated month and day names
+            const monthNames = getMonthNames(t);
+            const dayNames = getDayNames(t);
 
             // Layout calculations (scaled for export)
             const scaleFactor = targetWidth / width;
