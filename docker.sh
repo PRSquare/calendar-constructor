@@ -4,6 +4,11 @@
 
 set -e
 
+# Load environment variables if .env file exists
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -28,6 +33,28 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Function to setup environment
+setup_env() {
+    if [ -f .env ]; then
+        print_warning ".env file already exists!"
+        read -p "Do you want to overwrite it? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_status "Setup cancelled."
+            return
+        fi
+    fi
+    
+    cp .env.example .env
+    print_success ".env file created!"
+    print_status "Please edit .env file and set your SERVER_URL:"
+    print_status "  nano .env"
+    print_status ""
+    print_status "Example configurations:"
+    print_status "  SERVER_URL=your-domain.com"
+    print_status "  SERVER_URL=192.168.1.100"
+}
+
 # Function to show usage
 show_usage() {
     echo "Calendar Generator Docker Management"
@@ -35,6 +62,7 @@ show_usage() {
     echo "Usage: $0 [COMMAND]"
     echo ""
     echo "Commands:"
+    echo "  setup     Create .env file from template"
     echo "  dev       Start development environment"
     echo "  build     Build production assets"
     echo "  preview   Start preview server with production build"
@@ -46,9 +74,10 @@ show_usage() {
     echo "  help      Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0 dev                    # Start development server on http://localhost:5173"
+    echo "  $0 setup                  # Create .env configuration file"
+    echo "  $0 dev                    # Start development server"
     echo "  $0 build                  # Build production assets"
-    echo "  $0 prod                   # Start production server on http://localhost:80"
+    echo "  $0 prod                   # Start production server"
     echo "  $0 logs calendar-generator-dev  # Show logs for dev container"
 }
 
@@ -57,7 +86,7 @@ start_dev() {
     print_status "Starting development environment..."
     docker-compose --profile dev up -d
     print_success "Development environment started!"
-    print_status "Application available at: http://localhost:5173"
+    print_status "Application available at: http://${SERVER_URL:-localhost}:${DEV_PORT:-5173}"
     print_status "View logs with: $0 logs calendar-generator-dev"
 }
 
@@ -74,7 +103,7 @@ start_preview() {
     print_status "Starting preview environment..."
     docker-compose --profile preview up -d
     print_success "Preview environment started!"
-    print_status "Preview available at: http://localhost:4173"
+    print_status "Preview available at: http://${SERVER_URL:-localhost}:${PREVIEW_PORT:-4173}"
     print_status "View logs with: $0 logs calendar-generator-preview"
 }
 
@@ -89,7 +118,7 @@ start_prod() {
     # Then start nginx
     docker-compose --profile prod up -d calendar-generator-prod
     print_success "Production environment started!"
-    print_status "Application available at: http://localhost:80"
+    print_status "Application available at: http://${SERVER_URL:-localhost}:${PROD_PORT:-80}"
     print_status "View logs with: $0 logs calendar-generator-prod"
 }
 
@@ -124,6 +153,9 @@ open_shell() {
 
 # Main script logic
 case "${1:-help}" in
+    "setup")
+        setup_env
+        ;;
     "dev")
         start_dev
         ;;
