@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  # Development environment
+  calendar-generator-dev:
+    container_name: calendar-generator-dev
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - "5173:5173"  # Vite dev server default port
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # For file watching in Docker
+    command: >
+      sh -c "
+        npm install &&
+        npm run dev -- --host 0.0.0.0
+      "
+    networks:
+      - calendar-network
+    profiles:
+      - dev
+
+  # Production build environment
+  calendar-generator-build:
+    container_name: calendar-generator-build
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - dist:/app/dist
+    environment:
+      - NODE_ENV=production
+    command: >
+      sh -c "
+        npm install &&
+        npm run build
+      "
+    networks:
+      - calendar-network
+    profiles:
+      - build
+
+  # Production preview environment
+  calendar-generator-preview:
+    container_name: calendar-generator-preview
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - dist:/app/dist
+    ports:
+      - "4173:4173"  # Vite preview server default port
+    environment:
+      - NODE_ENV=production
+    command: >
+      sh -c "
+        npm install &&
+        npm run build &&
+        npm run preview -- --host 0.0.0.0
+      "
+    networks:
+      - calendar-network
+    profiles:
+      - preview
+
+  # Production environment with Nginx
+  calendar-generator-prod:
+    container_name: calendar-generator-prod
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - calendar-generator-build
+    networks:
+      - calendar-network
+    profiles:
+      - prod
+    restart: unless-stopped
+
+volumes:
+  node_modules:
+  dist:
+
+networks:
+  calendar-network:
+    driver: bridge
